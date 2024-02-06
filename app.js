@@ -27,4 +27,8 @@ function onConnected(socket) {
     socket.on("message", (data) => {
         socket.broadcast.emit("chat-message", data)
     })
+
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('typing-feedback', data)
+    })
 }

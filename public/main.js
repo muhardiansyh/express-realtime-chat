@@ -1,12 +1,16 @@
 const socket = io()
-const userOnline = document.querySelector('.user-online')
+const userStatusOnline = document.querySelector('.online')
+const userStatusTyping = document.querySelector('.typing')
 const user = document.querySelector('#username')
 const messageForm = document.querySelector('#message-form')
 const messageInput = document.querySelector('#input-message')
 const messageContainer = document.querySelector(".chat-body")
 
 socket.on("user-online", (data) => {
-    userOnline.innerText = `${data-1} Online 🟢`
+    const element = `
+        <small class="text-secondary user-online">${data-1} Online 🟢</small>
+    `
+    return userStatusOnline.innerHTML = element
 })
 
 messageForm.addEventListener('submit', (e) => {
@@ -40,7 +44,7 @@ socket.on("chat-message", (data) => {
 function addMessageToUI(isOwnMessage, data) {
     const element = `
     <div class="message ${isOwnMessage ? 'text-white d-flex flex-column justify-content-end align-items-end' : 'text-white d-flex flex-column justify-content-start align-items-start' } mb-0 mt-3">
-        <div class="${isOwnMessage ? 'send-message bg-primary text-white' : 'recieve-message bg-white text-dark'} py-2 px-3 ">
+        <div class="${isOwnMessage ? 'send-message bg-primary text-white' : 'receive-message bg-white text-dark'} py-2 px-3 ">
             <div class="user-info d-flex justify-content-between align-items-center gap-3">
                 <small>${data.userid}</small>
                 <small>~ ${data.user}</small>
@@ -54,3 +58,31 @@ function addMessageToUI(isOwnMessage, data) {
     messageContainer.innerHTML += element
 }
 
+messageInput.addEventListener('focus', (e) => {
+    socket.on("user-online", (data) => {
+        const element = `<small class="text-secondary user-online">${data-1} Online 🟢</small>`
+        return userStatus.innerHTML = element
+    })
+    socket.emit('typing', {
+        typing: `${user.value} sedang mengetik...`
+    })
+})
+
+messageInput.addEventListener('keypress', (e) => {
+    socket.emit('typing', {
+        typing: `${user.value} sedang mengetik...`
+    })
+})
+
+messageInput.addEventListener('blur', (e) => {
+    socket.emit('typing', {
+        typing: `<small class="text-secondary">Available</small>`
+    })
+})
+
+socket.on('typing-feedback', data => {
+    const element = `
+        <small class="text-secondary">${data.typing}</small>
+    `
+    return userStatusTyping.innerHTML = element
+})

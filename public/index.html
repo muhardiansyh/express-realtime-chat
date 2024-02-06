@@ -11,13 +11,15 @@
 <main class="container d-flex justify-content-center mt-4">
     <div class="chat-area border border-2 d-flex flex-column align-items-center rounded-4">
         <div class="chat-header d-flex flex-column align-items-center justify-content-center rounded-top-4 gap-1 py-2">
-            <input type="text" name="username" id="username" autocomplete="off" placeholder="Nama pengguna" class="border border-0 py-1 px-3 rounded-top-4 fw-semibold">
+            <div class="input-username d-flex justify-content-between align-items-center">
+                <input type="text" name="username" id="username" autocomplete="off" placeholder="Nama pengguna" class="border border-0 py-1 px-3 rounded-top-4 fw-semibold">
+                <div class="online"></div>
+            </div>
             <div class="status d-flex justify-content-between px-3">
-                <i><small class="text-secondary">Mengetik...</small></i>
-                <small class="text-secondary user-online"></small>
+                <div class="typing"><small class="text-secondary">Available</small></div>
             </div>
         </div>
-        <div class="chat-body d-flex flex-column align-items-start justify-content-start overflow-auto px-3 py-3">
+        <div class="chat-body d-flex flex-column align-items-center justify-content-start overflow-auto px-3 py-3">
             <!-- <div class="message text-white d-flex flex-column justify-content-start align-items-start mb-0 mt-3">
                 <div class="receive-message py-2 px-3 bg-white text-dark">
                     <div class="user-info d-flex justify-content-between align-items-center gap-3">
