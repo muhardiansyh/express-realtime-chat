@@ -17,10 +17,14 @@ function onConnected(socket) {
     console.log(socket.id);
     socketConnected.add(socket.id)
     io.emit("user-online", socketConnected.size)
-
+    
     socket.on("disconnect", () => {
         console.log("Socket disconnetc", socket.id);
         socketConnected.delete(socket.id)
         io.emit("user-online", socketConnected.size)
+    })
+    
+    socket.on("message", (data) => {
+        socket.broadcast.emit("chat-message", data)
     })
 }
